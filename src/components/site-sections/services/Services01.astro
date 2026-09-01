@@ -1,0 +1,52 @@
+---
+/**
+ * Services01 — a grid of what the business offers.
+ *
+ * Faithfully extracted from the homepage services section: a centered badge and
+ * heading over a three-up grid of icon tiles. Each tile can link to a details
+ * page. The design is fixed here; content comes from `ServicesContent`.
+ */
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import ProofTile from '@/components/ui/data-display/ProofTile/ProofTile.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import type { ServicesContent } from '@/data/types';
+
+interface Props {
+  content: ServicesContent;
+}
+
+const { content } = Astro.props;
+---
+
+<section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <div class="mx-auto max-w-6xl px-6 flex flex-col gap-8">
+    <div class="flex flex-col items-center gap-4 text-center" data-reveal>
+      <div class="flex flex-col items-center gap-6">
+        <Badge variant="brand" pill>
+          <Icon name={content.badge.icon} size="sm" />
+          {content.badge.label}
+        </Badge>
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+          {content.heading}
+        </h2>
+      </div>
+      <p class="text-lg text-foreground-muted max-w-2xl mx-auto">
+        {content.lead}
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-3">
+      {content.items.map((item, i) => (
+        <ProofTile
+          href={item.href}
+          icon={item.icon}
+          title={item.title}
+          data-reveal
+          data-reveal-delay={i || undefined}
+        >
+          {item.description}
+        </ProofTile>
+      ))}
+    </div>
+  </div>
+</section>

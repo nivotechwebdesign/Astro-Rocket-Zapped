@@ -1,0 +1,87 @@
+---
+/**
+ * Section catalogue — INTERNAL DEVELOPMENT TOOL, not a client-facing page.
+ *
+ * Shows each approved site-section variant rendered with sample content so we
+ * can review them in one place. It is deliberately kept off the live site:
+ *
+ *   • Excluded from production builds (rewritten to 404 when PROD).
+ *   • Marked noindex/nofollow so search engines never list it.
+ *   • Excluded from the sitemap (see the `sitemap()` filter in astro.config.mjs)
+ *     and disallowed in robots.txt.
+ *   • Not linked from any navigation, footer or client page.
+ */
+import LandingLayout from '@/layouts/LandingLayout.astro';
+import { Hero01, Services01, About01, Reviews01, CTA01 } from '@/components/site-sections';
+import home from '@/data/home';
+
+// Never ship this page in a production build. In `astro dev` it renders
+// normally; in `astro build` (PROD) it becomes a 404 so it cannot leak.
+if (import.meta.env.PROD) {
+  return Astro.rewrite('/404');
+}
+
+const variants = [
+  { id: 'Hero01', label: 'Hero01 — top-of-page banner' },
+  { id: 'Services01', label: 'Services01 — services grid' },
+  { id: 'About01', label: 'About01 — intro with stats card' },
+  { id: 'Reviews01', label: 'Reviews01 — customer testimonials' },
+  { id: 'CTA01', label: 'CTA01 — closing call to action' },
+];
+---
+
+<LandingLayout title="Section catalogue (dev)" description="Internal preview of approved site-section variants." noindex nofollow>
+  <div class="mx-auto max-w-6xl px-6 pt-28 pb-8">
+    <p class="text-xs font-semibold uppercase tracking-wide text-brand-500">Internal tool</p>
+    <h1 class="font-display text-3xl md:text-4xl font-bold text-foreground mt-2">Section catalogue</h1>
+    <p class="text-foreground-muted mt-3 max-w-2xl">
+      Each approved section variant rendered with sample content. This page is for internal review only and is
+      excluded from production builds, the sitemap and search engines.
+    </p>
+    <nav class="mt-6 flex flex-wrap gap-2">
+      {variants.map((v) => (
+        <a
+          href={`#${v.id}`}
+          class="inline-flex items-center rounded-full border border-border bg-background-secondary px-3 py-1 text-sm font-medium text-foreground-muted transition-colors hover:text-foreground hover:border-border-strong"
+        >
+          {v.id}
+        </a>
+      ))}
+    </nav>
+  </div>
+
+  <div id="Hero01" class="scroll-mt-24">
+    <div class="mx-auto max-w-6xl px-6 py-4">
+      <span class="inline-flex items-center rounded-md bg-brand-500/10 px-2.5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-400">Hero01</span>
+    </div>
+    <Hero01 content={home.hero} />
+  </div>
+
+  <div id="Services01" class="scroll-mt-24">
+    <div class="mx-auto max-w-6xl px-6 py-4">
+      <span class="inline-flex items-center rounded-md bg-brand-500/10 px-2.5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-400">Services01</span>
+    </div>
+    <Services01 content={home.services} />
+  </div>
+
+  <div id="About01" class="scroll-mt-24">
+    <div class="mx-auto max-w-6xl px-6 py-4">
+      <span class="inline-flex items-center rounded-md bg-brand-500/10 px-2.5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-400">About01</span>
+    </div>
+    <About01 content={home.about} />
+  </div>
+
+  <div id="Reviews01" class="scroll-mt-24">
+    <div class="mx-auto max-w-6xl px-6 py-4">
+      <span class="inline-flex items-center rounded-md bg-brand-500/10 px-2.5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-400">Reviews01</span>
+    </div>
+    <Reviews01 content={home.reviews} />
+  </div>
+
+  <div id="CTA01" class="scroll-mt-24">
+    <div class="mx-auto max-w-6xl px-6 py-4">
+      <span class="inline-flex items-center rounded-md bg-brand-500/10 px-2.5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-400">CTA01</span>
+    </div>
+    <CTA01 content={home.cta} />
+  </div>
+</LandingLayout>

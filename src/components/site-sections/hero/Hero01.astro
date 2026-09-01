@@ -1,0 +1,67 @@
+---
+/**
+ * Hero01 — the top-of-page banner.
+ *
+ * Faithfully extracted from the homepage hero: a centered, full-height dark
+ * banner with a badge, a multi-line heading, a description (with a shorter
+ * phone variant) and up to two call-to-action buttons. The design is fixed
+ * here; the words and links come from `HeroContent`.
+ */
+import { Hero } from '@/components/hero';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import type { HeroContent } from '@/data/types';
+
+interface Props {
+  content: HeroContent;
+}
+
+const { content } = Astro.props;
+const descriptionMobile = content.descriptionMobile ?? content.description;
+---
+
+<Hero layout="centered" size="xl" class="hero-dark-gradient" fullHeight data-header-flip-anchor data-bar-color="#000">
+  <Badge slot="badge" variant="brand" pill pulse class="dark:text-brand-200">{content.badge}</Badge>
+
+  <h1 slot="title" class="!text-[clamp(2rem,12.6vw,3rem)] sm:!text-5xl md:!text-6xl lg:!text-7xl">
+    {content.titleLines.map((line, i) => (
+      <>
+        {i > 0 && <br />}
+        <span class="text-brand-600 dark:text-foreground [-webkit-text-fill-color:currentColor]">{line}</span>
+      </>
+    ))}
+  </h1>
+
+  <p slot="description" class="!text-balance">
+    <span class="sm:hidden">{descriptionMobile}</span>
+    <span class="hidden sm:inline">{content.description}</span>
+  </p>
+
+  <Fragment slot="actions">
+    {content.actions.map((action, i) => (
+      <Button
+        size="lg"
+        variant={i === 0 ? 'primary' : 'outline'}
+        href={action.href}
+        target={action.external ? '_blank' : undefined}
+        rel={action.external ? 'noopener noreferrer' : undefined}
+      >
+        {action.icon && <Icon name={action.icon} size="sm" />}
+        {action.label}
+        <Icon name={action.trailingIcon ?? 'arrow-right'} size="sm" />
+      </Button>
+    ))}
+  </Fragment>
+</Hero>
+
+<style is:global>
+  /* Widen the hero description from md upward so the paragraph reads on two
+     lines instead of three on landscape phones, tablets and larger. Scoped via
+     the .hero-dark-gradient class so other heroes keep their reading measure. */
+  @media (min-width: 768px) {
+    .hero-dark-gradient .hero-title-slot + div {
+      max-width: 48rem;
+    }
+  }
+</style>

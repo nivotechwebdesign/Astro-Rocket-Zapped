@@ -1,0 +1,99 @@
+---
+/**
+ * About01 — a short introduction with a stats card.
+ *
+ * Faithfully extracted from the homepage about teaser: an introduction column
+ * (badge, two-line heading, paragraphs, button) beside an elevated stats card.
+ * The responsive behaviour (centered on tablets, two columns on wide screens)
+ * is preserved. The original hard-coded four stat tiles; here they are
+ * data-driven. The design is fixed here; content comes from `AboutContent`.
+ */
+import Badge from '@/components/ui/data-display/Badge/Badge.astro';
+import Button from '@/components/ui/form/Button/Button.astro';
+import Card from '@/components/ui/data-display/Card/Card.astro';
+import Icon from '@/components/ui/primitives/Icon/Icon.astro';
+import type { AboutContent } from '@/data/types';
+
+interface Props {
+  content: AboutContent;
+}
+
+const { content } = Astro.props;
+const tileClass =
+  'bg-background-tertiary rounded-xl p-5 flex flex-col items-center justify-center text-center gap-2 border-t-2 border-brand-500/40 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-md hover:border-brand-500 h-full';
+---
+
+<section class="relative z-10 py-[var(--space-section-md)] bg-background-secondary border-t border-border">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="grid gap-10 glitch:grid-cols-2 glitch:gap-12">
+      <div
+        class="flex flex-col justify-center sm:items-center sm:text-center glitch:items-start glitch:text-left"
+        data-reveal
+        data-reveal-ease="smooth"
+      >
+        <div class="flex flex-col gap-6 mb-6 sm:items-center glitch:items-start">
+          <Badge variant="brand" pill class="self-start sm:self-center glitch:self-start">
+            <Icon name={content.badge.icon} size="sm" />
+            {content.badge.label}
+          </Badge>
+          <h2 class="font-display text-3xl md:text-4xl font-bold text-foreground">
+            {content.headingLine1}<br />
+            <span class="text-brand-500">{content.headingLine2}</span>
+          </h2>
+        </div>
+        {content.paragraphs.map((para, i) =>
+          i === 0 ? (
+            <p class="text-lg text-foreground-muted leading-relaxed mb-4 sm:mb-0 sm:max-w-xl glitch:mb-4 glitch:max-w-none">
+              {para}
+            </p>
+          ) : (
+            <p class="text-lg text-foreground-muted leading-relaxed mb-8 sm:max-w-xl glitch:max-w-none sm:hidden glitch:block">
+              {para}
+            </p>
+          )
+        )}
+        <Button
+          variant="brand-outline"
+          href={content.cta.href}
+          class="self-start sm:self-center glitch:self-start sm:hidden glitch:inline-flex"
+        >
+          {content.cta.label}
+          <Icon name={content.cta.trailingIcon ?? 'arrow-right'} size="sm" />
+        </Button>
+      </div>
+
+      <Card
+        variant="elevated"
+        padding="lg"
+        class="h-full flex flex-col"
+        data-reveal
+        data-reveal-delay="1"
+        data-reveal-ease="smooth"
+      >
+        <p class="text-sm font-bold text-brand-500 mb-5 text-center sm:hidden glitch:block">{content.statsIntro}</p>
+        <div class="grid grid-cols-2 sm:grid-cols-4 glitch:grid-cols-2 gap-3 flex-1 auto-rows-fr">
+          {content.stats.map((stat) =>
+            stat.href ? (
+              <a href={stat.href} class={tileClass}>
+                <Icon name={stat.icon} class="w-10 h-10 text-brand-500" />
+                <p class="text-sm font-semibold text-foreground">{stat.label}</p>
+              </a>
+            ) : (
+              <div class={`${tileClass} cursor-default`}>
+                <Icon name={stat.icon} class="w-10 h-10 text-brand-500" />
+                <p class="text-sm font-semibold text-foreground">{stat.label}</p>
+              </div>
+            )
+          )}
+        </div>
+      </Card>
+
+      <div class="hidden sm:flex justify-center glitch:hidden" data-reveal data-reveal-delay="2">
+        <Button variant="brand-outline" href={content.cta.href}>
+          {content.cta.label}
+          <Icon name={content.cta.trailingIcon ?? 'arrow-right'} size="sm" />
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>

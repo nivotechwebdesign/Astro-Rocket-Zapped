@@ -399,7 +399,9 @@ export default defineConfig({
   integrations: [
     react(),
     mdx(),
-    sitemap(),
+    // Keep internal development routes (e.g. the /dev/ section catalogue) out
+    // of the published sitemap so they are never surfaced to search engines.
+    sitemap({ filter: (page) => !page.includes('/dev/') }),
     icon(),
     siteUrlCheck(),
     pagefind(),

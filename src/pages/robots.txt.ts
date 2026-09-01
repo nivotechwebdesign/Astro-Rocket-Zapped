@@ -11,6 +11,9 @@ Allow: /
 # Block API routes
 Disallow: /api/
 
+# Block internal development tools (e.g. the section catalogue)
+Disallow: /dev/
+
 # Plain-Markdown map of this site for language models — see https://llmstxt.org
 # LLM map: ${siteUrl}llms.txt
 
