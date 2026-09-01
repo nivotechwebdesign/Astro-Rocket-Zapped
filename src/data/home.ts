@@ -13,7 +13,7 @@ import site from './site';
 const home: HomeContent = {
   hero: {
     badge: 'Licensed & insured',
-    titleLines: ['Plumbing and heating', 'you can', 'count on.'],
+    titleLines: ['Plumbing and heating you can count on.'],
     description:
       'From dripping taps to full boiler installs, our local engineers turn up on time, tidy up after themselves and get the job done right the first time.',
     descriptionMobile: 'Local engineers for plumbing, heating and boilers — on time, tidy, done right.',
